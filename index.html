@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Models Radar | Kwiecien 2026</title>
+    <meta
+      name="description"
+      content="Interaktywny dashboard porownujacy modele AI z kwietniowego podsumowania: ceny, benchmarki, kontekst, licencje i zastosowania."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="AI Models Radar">
+        <span class="brand-mark">AI</span>
+        <span>
+          <strong>Models Radar</strong>
+          <small>Kwiecien 2026</small>
+        </span>
+      </a>
+      <nav aria-label="Nawigacja">
+        <a href="#news">Newsy</a>
+        <a href="#models">Modele</a>
+        <a href="#costs">Koszty</a>
+        <a href="#sources">Zrodla</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section id="news" class="dashboard section">
+        <div class="section-heading compact">
+          <div>
+            <p class="eyebrow">Kwietniowe podsumowanie AI</p>
+            <h1>Dashboard newsow i modeli</h1>
+          </div>
+          <div class="update-note">
+            <span>Aktualizacja</span>
+            <strong>30 kwietnia 2026</strong>
+          </div>
+        </div>
+
+        <div class="stats-strip" aria-label="Statystyki dashboardu">
+          <article>
+            <span>Newsy</span>
+            <strong id="statNewsCount">0</strong>
+          </article>
+          <article>
+            <span>Modele w porownaniu</span>
+            <strong id="statModelCount">0</strong>
+          </article>
+          <article>
+            <span>Najwiekszy kontekst</span>
+            <strong>1M</strong>
+          </article>
+          <article>
+            <span>Najtanszy input</span>
+            <strong>$0.13 / 1M</strong>
+          </article>
+        </div>
+
+        <div class="controls news-controls" aria-label="Filtry newsow">
+          <label>
+            Szukaj w newsach
+            <input id="newsSearchInput" type="search" placeholder="np. Anthropic, agent, video..." />
+          </label>
+          <label>
+            Kategoria
+            <select id="newsCategoryFilter">
+              <option value="all">Wszystkie</option>
+            </select>
+          </label>
+          <label>
+            Priorytet
+            <select id="newsPriorityFilter">
+              <option value="all">Wszystkie</option>
+              <option value="high">Glowne</option>
+              <option value="medium">Wazne</option>
+              <option value="low">Ciekawostki</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="model-count" id="newsCount"></div>
+        <div id="newsGrid" class="news-grid"></div>
+      </section>
+
+      <section id="models" class="section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Porownywarka</p>
+            <h2>Modele, ceny i benchmarki</h2>
+          </div>
+          <div class="view-toggle" role="group" aria-label="Widok">
+            <button class="icon-button active" data-view="cards" type="button">Karty</button>
+            <button class="icon-button" data-view="table" type="button">Tabela</button>
+          </div>
+        </div>
+
+        <div class="controls" aria-label="Filtry">
+          <label>
+            Szukaj
+            <input id="searchInput" type="search" placeholder="np. coding, OpenAI, 1M..." />
+          </label>
+          <label>
+            Dostawca
+            <select id="providerFilter">
+              <option value="all">Wszyscy</option>
+            </select>
+          </label>
+          <label>
+            Typ
+            <select id="typeFilter">
+              <option value="all">Wszystkie</option>
+              <option value="Frontier">Frontier</option>
+              <option value="Open weight">Open weight</option>
+            </select>
+          </label>
+          <label>
+            Sortuj
+            <select id="sortSelect">
+              <option value="aa-desc">AA Index malejaco</option>
+              <option value="output-asc">Cena output rosnaco</option>
+              <option value="input-asc">Cena input rosnaco</option>
+              <option value="context-desc">Kontekst malejaco</option>
+              <option value="date-desc">Data premiery</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="model-count" id="resultCount"></div>
+        <div id="cardsView" class="model-grid"></div>
+        <div id="tableView" class="table-wrap hidden">
+          <table>
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Dostawca</th>
+                <th>Typ</th>
+                <th>Kontekst</th>
+                <th>Input / 1M</th>
+                <th>Output / 1M</th>
+                <th>AA Index</th>
+                <th>Benchmark</th>
+              </tr>
+            </thead>
+            <tbody id="modelTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="costs" class="section split">
+        <div>
+          <p class="eyebrow">Kalkulator</p>
+          <h2>Policz koszt typowego przebiegu</h2>
+          <p class="section-copy">
+            Wpisz przykladowy wolumen tokenow. Kalkulator pokazuje koszt samego modelu dla pozycji,
+            ktore maja publiczna cene tokenowa. Aplikacje, narzedzia wideo i newsy kreatywne sa
+            opisane wyzej jako bloczki, bez mieszania ich z cennikami modeli.
+          </p>
+          <div class="calculator">
+            <label>
+              Input tokenow na request
+              <input id="inputTokens" type="number" min="0" step="1000" value="20000" />
+            </label>
+            <label>
+              Output tokenow na request
+              <input id="outputTokens" type="number" min="0" step="500" value="4000" />
+            </label>
+            <label>
+              Liczba requestow
+              <input id="requestsCount" type="number" min="1" step="1" value="100" />
+            </label>
+          </div>
+        </div>
+        <div class="cost-panel">
+          <div class="cost-header">
+            <span>Najtansze modele w scenariuszu</span>
+            <strong id="scenarioLabel"></strong>
+          </div>
+          <div id="costList" class="cost-list"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Narracja do odcinka</p>
+            <h2>Jak czytac te liczby</h2>
+          </div>
+        </div>
+        <div class="insight-grid">
+          <article>
+            <h3>Cena tokena to nie cala cena</h3>
+            <p>
+              Modele rozni tokenizacja, dlugosc odpowiedzi, cache i tryby reasoning. Dlatego w
+              dashboardzie pokazuje surowy cennik i kalkulator scenariusza, a nie jeden magiczny
+              ranking.
+            </p>
+          </article>
+          <article>
+            <h3>Benchmarki mierza rozne swiaty</h3>
+            <p>
+              SWE-Bench, Terminal-Bench, Arena i Artificial Analysis sa przydatne, ale nie sa tym
+              samym. Najlepiej porownywac modele w zadaniu podobnym do wlasnego workflow.
+            </p>
+          </article>
+          <article>
+            <h3>Open-weight wraca jako realna alternatywa</h3>
+            <p>
+              Gemma 4, DeepSeek V4, Qwen i GLM pokazuja, ze prywatnosc, kontrola i koszt moga byc
+              wazniejsze niz absolutne miejsce na leaderboardzie.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="sources" class="section sources">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Transparentnosc</p>
+            <h2>Zrodla danych</h2>
+          </div>
+        </div>
+        <div id="sourceList" class="source-list"></div>
+      </section>
+    </main>
+
+    <footer>
+      <span>AI Models Radar, przygotowane do kwietniowego podsumowania newsow AI.</span>
+      <a href="#top">Wroc na gore</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
